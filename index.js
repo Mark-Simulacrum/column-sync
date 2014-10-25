@@ -24,7 +24,7 @@ function init() {
 		return null;
 	}
 
-	_.forEach(syncGroups, function (syncGroup, groupID) {
+	_.forEachRight(syncGroups, function (syncGroup, groupID) {
 		var maxOffsetTop = _.max(syncGroup, 'offsetTop').offsetTop;
 
 		_.forEach(syncGroup, function (syncDivider) {
