@@ -20,10 +20,7 @@ body {
 }
 
 .column [sync] {
-	display: flex;
 	text-align: left;
-	border: 1px dashed red;
-	background-color: rgba(255, 0, 0, 0.18);
-	overflow:visible;
+	border-bottom: 1px dashed red;
 	height:0;
 }
