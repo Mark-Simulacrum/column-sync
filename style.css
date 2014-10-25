@@ -1,0 +1,29 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+}
+
+.columns {
+	display: flex;
+	flex: 1;
+}
+
+.column {
+	flex: 1;
+	outline: 1px solid black;
+	text-align: center;
+}
+
+.column [sync] {
+	display: flex;
+	text-align: left;
+	border: 1px dashed red;
+	background-color: rgba(255, 0, 0, 0.18);
+	overflow:visible;
+	height:0;
+}
