@@ -4,7 +4,10 @@
 		<title>The Syncer Of Columns</title>
 		<link href="style.css" rel="stylesheet" />
 		<script src="lodash.min.js"></script>
-		<script src="index.js"></script>
+		<script>
+			(function () {var s = document.createElement('script'); s.src = 'index.js'; document.head.appendChild(s);}())
+		</script>
+<!--		<script src="index.js"></script>-->
 	</head>
 	<body>
 		<div class="columns">
@@ -20,9 +23,9 @@
 				<div>A9</div>
 				<div>A10</div>
 				<div>A11</div>
-				<div sync="a"></div>
-				<div>A12</div>
 				<div sync="2"></div>
+				<div>A12</div>
+				<div sync="a"></div>
 				<div>A13</div>
 				<div>A14</div>
 				<div>A15</div>
@@ -32,16 +35,15 @@
 			<div class="column">
 				<div>B1</div>
 				<div>B2</div>
-				<div sync="a"></div>
+				<div sync="2"></div>
 				<div>B3</div>
 				<div>B4</div>
 				<div>B5</div>
 				<div>B6</div>
 				<div>B7</div>
-				<div sync="2"></div>
+				<div sync="a"></div>
 				<div>B5</div>
 			</div>
-<!--
 			<div class="column">
 				<div>C1</div>
 				<div sync="2"></div>
@@ -54,12 +56,11 @@
 			</div>
 			<div class="column">
 				<div>D1</div>
-				<div sync="apples"></div>
+				<div sync="a"></div>
 				<div>D2</div>
 				<div sync="3"></div>
 				<div>D3</div>
 			</div>
 		</div>
--->
 	</body>
 </html>

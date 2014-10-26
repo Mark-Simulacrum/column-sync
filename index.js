@@ -1,14 +1,24 @@
 /*jshint browser:true*/
 /*globals _ */
 
-window.onload = init;
+//window.onload = init;
 
-function init() {
+//function init() {
 	'use strict';
 
 	var syncDividers = document.querySelectorAll('[sync]');
-	var syncGroups = _.groupBy(syncDividers, function (element) {
-		return element.getAttribute('sync');
+	var syncGroups = [];
+	_.forEach(syncDividers, function (element) {
+		var syncId = element.getAttribute('sync');
+		var keyForId = _.findKey(syncGroups, {id: syncId});
+		if (keyForId) {
+			syncGroups[keyForId].elements.push(element);
+		} else {
+			syncGroups.push({
+				elements: [element],
+				id: syncId
+			});
+		}
 	});
 
 	function findPreviousDivider(element) {
@@ -20,14 +30,19 @@ function init() {
 				return findPreviousDivider(previousElement);
 			}
 		}
-
 		return null;
 	}
 
-	_.forEachRight(syncGroups, function (syncGroup, groupID) {
-		var maxOffsetTop = _.max(syncGroup, 'offsetTop').offsetTop;
+	/*
+	 * Must iterate over syncGroups in order of top-to-bottom.
+	 */
+	_.forEach(syncGroups, function (syncGroup) {
+		var groupID = syncGroup.id;
+		var maxOffsetTop = _.max(syncGroup.elements, 'offsetTop').offsetTop;
 
-		_.forEach(syncGroup, function (syncDivider) {
+		_.forEach(syncGroup.elements, function (syncDivider) {
+			syncDivider.innerHTML = groupID;
+
 			var siblings = _.toArray(syncDivider.parentElement.children);
 			var currentDividerIndex = _.indexOf(siblings, syncDivider);
 			var previousDividerIndex = _.indexOf(siblings, findPreviousDivider(syncDivider));
@@ -35,11 +50,9 @@ function init() {
 			var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
 			var paddingPerElement = (maxOffsetTop - syncDivider.offsetTop) / elementsAfterPreviousDivider.length;
 
-			syncDivider.innerHTML = 'Group: ' + groupID;
-
 			_.forEach(elementsAfterPreviousDivider, function (element) {
 				element.style.padding = (paddingPerElement / 2) + 'px 0';
 			});
 		});
 	});
-}
+//}

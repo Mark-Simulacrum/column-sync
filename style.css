@@ -21,6 +21,9 @@ body {
 
 .column [sync] {
 	text-align: left;
-	border-bottom: 1px dashed red;
+	border-bottom-width: 2px;
+	border-bottom-color: red;
+	border-bottom-style: dotted;
 	height:0;
+	padding-left: 0.5em;
 }
