@@ -46,7 +46,7 @@ _.forEach(syncGroups, function (syncGroup) {
 		var  height = maxOffsetTop - syncDivider.offsetTop;
 
 		if (elementsAfterPreviousDivider.length === 0) {
-			syncDivider.style.height = height + 'px';
+			syncDivider.style.paddingTop = height + 'px';
 		} else {
 			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
