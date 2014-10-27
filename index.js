@@ -43,12 +43,17 @@ _.forEach(syncGroups, function (syncGroup) {
 		var previousDividerIndex = _.indexOf(siblings, findPreviousDivider(syncDivider));
 		previousDividerIndex = previousDividerIndex < 0 ? 0 : previousDividerIndex + 1;
 		var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
-		var paddingPerElement = (maxOffsetTop - syncDivider.offsetTop) / elementsAfterPreviousDivider.length;
+		var  height = maxOffsetTop - syncDivider.offsetTop;
 
-		if (paddingPerElement !== 0) {
-			_.forEach(elementsAfterPreviousDivider, function (element) {
-				element.style.padding = (paddingPerElement / 2) + 'px 0';
-			});
+		if (elementsAfterPreviousDivider.length === 0) {
+			syncDivider.style.height = height + 'px';
+		} else {
+			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
+			if (paddingPerElement !== 0) {
+				_.forEach(elementsAfterPreviousDivider, function (element) {
+					element.style.padding = (paddingPerElement / 2) + 'px 0';
+				});
+			}
 		}
 	});
 });
