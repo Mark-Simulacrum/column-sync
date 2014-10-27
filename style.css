@@ -9,11 +9,13 @@ body {
 }
 
 .columns {
+	width: 100%;
 	display: flex;
 	flex: 1;
 }
 
 .column {
+	width: 100%;
 	flex: 1;
 	outline: 1px solid black;
 	text-align: center;
@@ -25,5 +27,9 @@ body {
 	border-bottom-color: red;
 	border-bottom-style: dotted;
 	height:0;
-	padding-left: 0.5em;
+	text-indent: 0.5em;
+}
+
+.column [sync=""] {
+	display:none;
 }
