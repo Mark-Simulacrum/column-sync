@@ -33,7 +33,10 @@ function findPreviousDivider(element) {
  */
 _.forEach(syncGroups, function (syncGroup) {
 	var groupID = syncGroup.id;
-	var maxOffsetTop = _.max(syncGroup.elements, 'offsetTop').offsetTop;
+	function maxOffsetTop() {
+		var maxElement = _.max(syncGroup.elements, 'offsetTop');
+		return maxElement.offsetTop + maxElement.offsetHeight; // Offset height is required when we add padding to the sync element itself.
+	}
 
 	_.forEach(syncGroup.elements, function (syncDivider) {
 		syncDivider.innerHTML = groupID;
@@ -43,12 +46,10 @@ _.forEach(syncGroups, function (syncGroup) {
 		var previousDividerIndex = _.indexOf(siblings, findPreviousDivider(syncDivider));
 		previousDividerIndex = previousDividerIndex < 0 ? 0 : previousDividerIndex + 1;
 		var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
-		var height = maxOffsetTop - syncDivider.offsetTop;
+		var height = maxOffsetTop() - syncDivider.offsetTop;
 
 		if (elementsAfterPreviousDivider.length === 0) {
-			if (height !== 0) {
-				syncDivider.style.paddingTop = height + 'px';
-			}
+			syncDivider.style.paddingTop = (height < 20 ? 20 : height) + 'px'; // Minimum padding of 20px
 		} else {
 			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
