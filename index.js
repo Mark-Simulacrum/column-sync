@@ -43,10 +43,12 @@ _.forEach(syncGroups, function (syncGroup) {
 		var previousDividerIndex = _.indexOf(siblings, findPreviousDivider(syncDivider));
 		previousDividerIndex = previousDividerIndex < 0 ? 0 : previousDividerIndex + 1;
 		var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
-		var  height = maxOffsetTop - syncDivider.offsetTop;
+		var height = maxOffsetTop - syncDivider.offsetTop;
 
 		if (elementsAfterPreviousDivider.length === 0) {
-			syncDivider.style.paddingTop = height + 'px';
+			if (height !== 0) {
+				syncDivider.style.paddingTop = height + 'px';
+			}
 		} else {
 			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
