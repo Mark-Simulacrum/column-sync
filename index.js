@@ -63,10 +63,13 @@ _.forEach(syncGroups, function (syncGroup) {
 
 		if (elementsAfterPreviousDivider.length === 0) {
 			if (syncDivider.previousElementSibling) {
-				syncDivider.previousElementSibling.style.marginBottom = height + 'px';
+				var previousSyncDivider = syncDivider.previousElementSibling;
+				var computedHeight = height;
+				computedHeight += Number(getComputedStyle(previousSyncDivider).marginBottom.replace("px", ""));
+				previousSyncDivider.style.marginBottom = computedHeight + 'px';
 			}
 		} else {
-			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
+			var paddingPerElement = height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
 				_.forEach(elementsAfterPreviousDivider, function (element) {
 					element.style.padding = (paddingPerElement / 2) + 'px 0';

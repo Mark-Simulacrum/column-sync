@@ -22,6 +22,7 @@ body {
 }
 
 .column [sync] {
+	margin-bottom: 0.5em;
 	text-align: left;
 	border-bottom-width: 2px;
 	border-bottom-color: red;
