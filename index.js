@@ -18,14 +18,29 @@ _.forEach(syncDividers, function (element) {
 });
 
 function findPreviousDivider(element) {
-	while (element.previousElementSibling) {
-		var previousElement = element.previousElementSibling;
-		if (previousElement.hasAttribute('sync')) {
-			return previousElement;
+	var previousElement = element.previousElementSibling;
+	if (!previousElement || previousElement.hasAttribute('sync')) {
+		return previousElement;
+	} else {
+		return findPreviousDivider(previousElement);
+	}
+}
+
+function amountOfDividersAbove(element) {
+	var amount = 0;
+	while (true) {
+		element = findPreviousDivider(element);
+		if (element) {
+			amount += 1;
 		} else {
-			return findPreviousDivider(previousElement);
+			return amount;
 		}
 	}
+}
+
+function getOffsetTopAndHeight(element) {
+	var boundingRect = element.getBoundingClientRect();
+	return boundingRect.top - boundingRect.height;
 }
 
 /*
@@ -33,10 +48,8 @@ function findPreviousDivider(element) {
  */
 _.forEach(syncGroups, function (syncGroup) {
 	var groupID = syncGroup.id;
-	function maxOffsetTop() {
-		var maxElement = _.max(syncGroup.elements, 'offsetTop');
-		return maxElement.offsetTop + maxElement.offsetHeight; // Offset height is required when we add padding to the sync element itself.
-	}
+	var maxOffsetElement = _.max(syncGroup.elements, getOffsetTopAndHeight);
+	var maxOffsetTop = maxOffsetElement.getBoundingClientRect().top + maxOffsetElement.getBoundingClientRect().height;
 
 	_.forEach(syncGroup.elements, function (syncDivider) {
 		syncDivider.innerHTML = groupID;
@@ -46,10 +59,12 @@ _.forEach(syncGroups, function (syncGroup) {
 		var previousDividerIndex = _.indexOf(siblings, findPreviousDivider(syncDivider));
 		previousDividerIndex = previousDividerIndex < 0 ? 0 : previousDividerIndex + 1;
 		var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
-		var height = maxOffsetTop() - syncDivider.offsetTop;
+		var height = maxOffsetTop - syncDivider.getBoundingClientRect().top;
 
 		if (elementsAfterPreviousDivider.length === 0) {
-			syncDivider.style.paddingTop = (height < 20 ? 20 : height) + 'px'; // Minimum padding of 20px
+			if (syncDivider.previousElementSibling) {
+				syncDivider.previousElementSibling.style.marginBottom = height + 'px';
+			}
 		} else {
 			var paddingPerElement =  height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
@@ -58,5 +73,10 @@ _.forEach(syncGroups, function (syncGroup) {
 				});
 			}
 		}
+		/*Debugging*/
+/*
+		syncDivider.innerHTML += ' ' + syncDivider.getBoundingClientRect().top;
+		syncDivider.innerHTML += ' ' + syncDivider.getBoundingClientRect().height;
+*/
 	});
 });
