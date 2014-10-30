@@ -26,18 +26,6 @@ function findPreviousDivider(element) {
 	}
 }
 
-function amountOfDividersAbove(element) {
-	var amount = 0;
-	while (true) {
-		element = findPreviousDivider(element);
-		if (element) {
-			amount += 1;
-		} else {
-			return amount;
-		}
-	}
-}
-
 function getOffsetTopAndHeight(element) {
 	var boundingRect = element.getBoundingClientRect();
 	return boundingRect.top - boundingRect.height;
@@ -61,18 +49,19 @@ _.forEach(syncGroups, function (syncGroup) {
 		var elementsAfterPreviousDivider = siblings.slice(previousDividerIndex, currentDividerIndex);
 		var height = maxOffsetTop - syncDivider.getBoundingClientRect().top;
 
-		if (elementsAfterPreviousDivider.length === 0) {
+		if (elementsAfterPreviousDivider.length === 0 && syncDivider.previousElementSibling) {
 			if (syncDivider.previousElementSibling) {
-				var previousSyncDivider = syncDivider.previousElementSibling;
 				var computedHeight = height;
-				computedHeight += Number(getComputedStyle(previousSyncDivider).marginBottom.replace("px", ""));
+				var previousSyncDivider = syncDivider.previousElementSibling;
+				computedHeight += parseFloat(getComputedStyle(previousSyncDivider).marginBottom, 10);
 				previousSyncDivider.style.marginBottom = computedHeight + 'px';
 			}
 		} else {
 			var paddingPerElement = height / elementsAfterPreviousDivider.length;
 			if (paddingPerElement !== 0) {
 				_.forEach(elementsAfterPreviousDivider, function (element) {
-					element.style.padding = (paddingPerElement / 2) + 'px 0';
+					element.style.paddingTop = (paddingPerElement / 2) + 'px';
+					element.style.paddingBottom = (paddingPerElement / 2) + 'px';
 				});
 			}
 		}
